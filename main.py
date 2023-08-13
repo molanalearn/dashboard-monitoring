@@ -1,5 +1,6 @@
 """
 Aplikasi deteksi gempa terkini
+MODULARISASI DENGAN FUNCTION
 """
 
 
