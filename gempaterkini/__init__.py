@@ -19,13 +19,21 @@ def ekstraksi_data():
         return None
 
     if content.status_code == 200:
-        print(content.text)
-        # soup = BeautifulSoup(content)
-        # print(soup.prettify())
+        soup = BeautifulSoup(content.text, 'html.parser')
+
+        result = soup.find('span', {'class': 'waktu'})
+        result = result.text.split (', ')
+        tanggal = result[0]
+        waktu = result[1]
+
+        result = soup.find('span', {'class': 'ic magnitude'})
+        result = result.text
+        magnitudo = result
+
         hasil = dict()
-        hasil['tanggal'] = '29 Juli 2023'
-        hasil['waktu'] = '18:19:11 WIB'
-        hasil['magnitudo'] = 5.0
+        hasil['tanggal'] = tanggal #'29 Juli 2023'
+        hasil['waktu'] = waktu #'18:19:11 WIB'
+        hasil['magnitudo'] = magnitudo #5.0
         hasil['kedalaman'] = '51 km'
         hasil['geo'] = {'ls': 1.40,'bt': 128.31}
         hasil['pusat'] = 'Pusat gempa berada di laut 21 km BaratLaut Halmahera Timur'
