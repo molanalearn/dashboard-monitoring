@@ -26,18 +26,41 @@ def ekstraksi_data():
         tanggal = result[0]
         waktu = result[1]
 
-        result = soup.find('span', {'class': 'ic magnitude'})
-        result = result.text
-        magnitudo = result
+        result = soup.find('div', {'class': 'col-md-6 col-xs-6 gempabumi-detail no-padding'})
+        result = result.findChildren('li')
+        i = 0
+        magnitudo = None
+        kedalaman = None
+        ls = None
+        bt = None
+        lokasi = None
+        dirasakan = None
+
+
+        for res in result:
+            if i == 1:
+                magnitudo = res.text
+            elif i == 2:
+                kedalaman = res.text
+            elif i == 3:
+                koordinat = res.text.split(' - ')
+                ls = koordinat[0]
+                bt = koordinat[1]
+            elif i == 4:
+                lokasi = res.text
+            elif i == 5:
+                dirasakan = res.text
+
+            i = i + 1
 
         hasil = dict()
         hasil['tanggal'] = tanggal #'29 Juli 2023'
         hasil['waktu'] = waktu #'18:19:11 WIB'
         hasil['magnitudo'] = magnitudo #5.0
-        hasil['kedalaman'] = '51 km'
-        hasil['geo'] = {'ls': 1.40,'bt': 128.31}
-        hasil['pusat'] = 'Pusat gempa berada di laut 21 km BaratLaut Halmahera Timur'
-        hasil['dirasakan'] = 'Dirasakan (Skala MMI): III Morotai Selatan, II-III Halmahera Timur, II Halmahera Utara'
+        hasil['kedalaman'] = kedalaman #'51 km'
+        hasil['koordinat'] = {'ls': ls,'bt': bt}
+        hasil['lokasi'] = lokasi #'Pusat gempa berada di laut 21 km BaratLaut Halmahera Timur'
+        hasil['dirasakan'] = dirasakan #'Dirasakan (Skala MMI): III Morotai Selatan, II-III Halmahera Timur, II Halmahera Utara'
         return hasil
     else:
         return None
@@ -53,6 +76,6 @@ def tampilkan_data(result):
     print(f"Waktu {result['waktu']}")
     print(f"Magnitudo {result['magnitudo']}")
     print(f"Kedalaman {result['kedalaman']}")
-    print(f"Geo: LS={result['geo']['ls']}, BT={result['geo']['bt']}")
-    print(f"Pusat Gempa: {result['pusat']}")
+    print(f"Koordinat: LS={result['koordinat']['ls']}, BT={result['koordinat']['bt']}")
+    print(f"Lokasi: {result['lokasi']}")
     print(f"Dirasakan: {result['dirasakan']}")
